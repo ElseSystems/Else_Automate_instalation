@@ -1,0 +1,3 @@
+# Coloque seus arquivos instaladores (.exe e .msi) nesta pasta
+# Eles serão incluídos no executável final pelo PyInstaller
+

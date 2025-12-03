@@ -1,0 +1,16 @@
+# ══════════════════════════════════════════════════════════════════════════════
+# AutoSetup Empresarial v1.0 - Dependências
+# ══════════════════════════════════════════════════════════════════════════════
+#
+# Instalação: pip install -r requirements.txt
+#
+
+# Interface gráfica moderna baseada em Tkinter
+customtkinter>=5.2.0
+
+# Manipulação de imagens (dependência do CustomTkinter)
+Pillow>=10.0.0
+
+# Empacotador para criar executável único
+pyinstaller>=6.0.0
+
