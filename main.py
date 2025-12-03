@@ -1,51 +1,21 @@
 # ╔══════════════════════════════════════════════════════════════════════════════╗
 # ║                    AUTOSETUP EMPRESARIAL v1.0                                ║
 # ║              Assistente de Pós-Formatação Automatizado                       ║
+# ║                                                                              ║
+# ║  Autor: Samuel Else                                                          ║
+# ║  GitHub: https://github.com/SamuelElse/AutoSetup-Empresarial                 ║
+# ║  Licença: MIT                                                                ║
 # ╚══════════════════════════════════════════════════════════════════════════════╝
 #
-# ┌──────────────────────────────────────────────────────────────────────────────┐
-# │                    GUIA: SILENT SWITCHES (ARGUMENTOS SILENCIOSOS)            │
-# ├──────────────────────────────────────────────────────────────────────────────┤
-# │                                                                              │
-# │  Para adicionar novos programas ao catálogo, você precisa descobrir os       │
-# │  "silent switches" - argumentos que fazem a instalação rodar sem interação.  │
-# │                                                                              │
-# │  📌 COMO DESCOBRIR OS SWITCHES:                                              │
-# │                                                                              │
-# │  1. MÉTODO UNIVERSAL - Execute no CMD/PowerShell:                            │
-# │     > nome_instalador.exe /?                                                 │
-# │     > nome_instalador.exe /help                                              │
-# │     > nome_instalador.exe --help                                             │
-# │                                                                              │
-# │  2. PESQUISE NO GOOGLE:                                                      │
-# │     "nome_do_programa silent install switches"                               │
-# │                                                                              │
-# │  3. SITES ESPECIALIZADOS:                                                    │
-# │     - https://silentinstallhq.com/                                           │
-# │     - https://www.itninja.com/software                                       │
-# │                                                                              │
-# │  📌 SWITCHES COMUNS POR TIPO DE INSTALADOR:                                  │
-# │                                                                              │
-# │  ┌─────────────────┬────────────────────────────────────────────────┐        │
-# │  │ Tipo            │ Switches Típicos                               │        │
-# │  ├─────────────────┼────────────────────────────────────────────────┤        │
-# │  │ MSI (.msi)      │ /qn /quiet /passive /norestart                 │        │
-# │  │ NSIS            │ /S (maiúsculo!) /D=C:\caminho                  │        │
-# │  │ Inno Setup      │ /VERYSILENT /SUPPRESSMSGBOXES /NORESTART       │        │
-# │  │ InstallShield   │ /s /v"/qn" /SMS                                │        │
-# │  │ Nullsoft        │ /S                                             │        │
-# │  └─────────────────┴────────────────────────────────────────────────┘        │
-# │                                                                              │
-# │  📌 PARA COMPILAR COM PYINSTALLER:                                           │
-# │                                                                              │
-# │  1. Crie a pasta 'installers' no mesmo diretório do main.py                  │
-# │  2. Coloque todos os instaladores (.exe/.msi) nessa pasta                    │
-# │  3. Execute:                                                                 │
-# │     pyinstaller --onefile --noconsole --add-data "installers;installers" main.py
-# │                                                                              │
-# │  O executável final terá todos os instaladores embutidos!                    │
-# │                                                                              │
-# └──────────────────────────────────────────────────────────────────────────────┘
+# Descrição:
+#   Ferramenta para automatizar a instalação de softwares após formatação.
+#   Permite instalação expressa, personalizada, com arquivos locais ou da nuvem.
+#
+# Uso:
+#   python main.py           # Executa a aplicação
+#   python build.py          # Compila para executável (.exe)
+#
+# Documentação completa: README.md
 
 import os
 import sys
@@ -58,9 +28,90 @@ import tempfile
 import urllib.request
 import urllib.error
 import ssl
+import ctypes
 from tkinter import filedialog
 from typing import List, Dict, Optional, Callable
 from datetime import datetime
+
+# ══════════════════════════════════════════════════════════════════════════════
+# ELEVAÇÃO DE PRIVILÉGIOS - SOLICITAR ADMINISTRADOR
+# ══════════════════════════════════════════════════════════════════════════════
+
+def is_admin() -> bool:
+    """Verifica se o programa está rodando como administrador"""
+    try:
+        return ctypes.windll.shell32.IsUserAnAdmin() != 0
+    except:
+        return False
+
+
+def run_as_admin():
+    """
+    Reinicia o programa com privilégios de administrador.
+    Mostra o prompt do UAC (Controle de Conta de Usuário).
+    """
+    if sys.platform != "win32":
+        return False
+    
+    try:
+        # Obtém o caminho do executável
+        if getattr(sys, 'frozen', False):
+            # Rodando como executável compilado
+            script = sys.executable
+        else:
+            # Rodando como script Python
+            script = sys.executable
+            # Adiciona o script como argumento
+        
+        # Parâmetros para ShellExecuteW
+        # Verifica se é um script ou executável
+        if getattr(sys, 'frozen', False):
+            params = ""
+        else:
+            params = f'"{os.path.abspath(__file__)}"'
+        
+        # Solicita elevação usando ShellExecuteW
+        # "runas" = executar como administrador
+        result = ctypes.windll.shell32.ShellExecuteW(
+            None,           # hwnd
+            "runas",        # operação (executar como admin)
+            script,         # arquivo
+            params,         # parâmetros
+            None,           # diretório
+            1               # SW_SHOWNORMAL
+        )
+        
+        # Se result > 32, a operação foi bem sucedida
+        return result > 32
+        
+    except Exception as e:
+        print(f"Erro ao solicitar elevação: {e}")
+        return False
+
+
+def ensure_admin():
+    """
+    Garante que o programa está rodando como administrador.
+    Se não estiver, solicita elevação e fecha a instância atual.
+    """
+    if sys.platform != "win32":
+        return  # Não aplicável em outros sistemas
+    
+    if not is_admin():
+        # Tenta reiniciar como admin
+        if run_as_admin():
+            # Fecha esta instância (a nova com admin vai abrir)
+            sys.exit(0)
+        else:
+            # Se o usuário cancelou o UAC ou houve erro, 
+            # continua sem admin (algumas funções podem falhar)
+            pass
+
+
+# Solicita privilégios de administrador ANTES de importar GUI
+# para evitar múltiplas janelas
+ensure_admin()
+
 
 import customtkinter as ctk
 from customtkinter import CTkImage

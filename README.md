@@ -1,39 +1,75 @@
-# 🚀 AutoSetup Empresarial v1.0
+<div align="center">
 
-> Assistente de Pós-Formatação Automatizado para Windows
+# ⚙️ AutoSetup Empresarial
 
-![Python](https://img.shields.io/badge/Python-3.8+-blue.svg)
-![CustomTkinter](https://img.shields.io/badge/UI-CustomTkinter-green.svg)
-![License](https://img.shields.io/badge/License-MIT-yellow.svg)
+### Assistente de Pós-Formatação Automatizado para Windows
 
-<p align="center">
-  <img src="https://img.shields.io/badge/⚙️-AutoSetup-6366f1?style=for-the-badge&logoColor=white" alt="AutoSetup Logo"/>
-</p>
+[![Python](https://img.shields.io/badge/Python-3.8+-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://python.org)
+[![CustomTkinter](https://img.shields.io/badge/UI-CustomTkinter-00D4AA?style=for-the-badge)](https://github.com/TomSchimansky/CustomTkinter)
+[![License](https://img.shields.io/badge/License-MIT-yellow?style=for-the-badge)](LICENSE)
+[![Windows](https://img.shields.io/badge/Windows-10%2F11-0078D6?style=for-the-badge&logo=windows&logoColor=white)](https://www.microsoft.com/windows)
 
-## 📋 Visão Geral
+<br>
 
-O **AutoSetup Empresarial** é uma ferramenta que automatiza a instalação de software após uma formatação de sistema. Com uma interface moderna e intuitiva, ele permite:
+**Automatize a instalação de softwares após formatar seu computador.**  
+*Uma ferramenta profissional para TI que economiza horas de trabalho.*
 
-- ⚡ **Instalação Expressa**: Configure um computador novo em minutos
-- 🎯 **Instalação Personalizada**: Escolha exatamente o que instalar
-- 📦 **Executável Único**: Todos os instaladores embutidos em um único `.exe`
-- 🔇 **Instalação Silenciosa**: Sem pop-ups ou interações manuais
+<br>
+
+[📥 Download](#-instalação) • [📖 Documentação](#-funcionalidades) • [🤝 Contribuir](CONTRIBUTING.md) • [🐛 Reportar Bug](https://github.com/SamuelElse/AutoSetup-Empresarial/issues)
+
+</div>
 
 ---
 
-## 🛠️ Instalação e Uso
+## 📋 Sobre o Projeto
+
+O **AutoSetup Empresarial** é uma ferramenta desktop desenvolvida em Python que automatiza a instalação de softwares em computadores Windows. Ideal para profissionais de TI que precisam configurar múltiplas máquinas após formatação.
+
+### ✨ Destaques
+
+| Recurso | Descrição |
+|---------|-----------|
+| ⚡ **Instalação Expressa** | Configure um PC novo em minutos com softwares essenciais |
+| 🎯 **Instalação Personalizada** | Escolha exatamente quais programas instalar |
+| ☁️ **Download da Nuvem** | Baixe instaladores automaticamente de URLs |
+| 📦 **Executável Único** | Compile tudo em um único `.exe` portátil |
+| 🔇 **Modo Silencioso** | Instalações sem pop-ups ou interação manual |
+| 🛡️ **Privilégios Admin** | Solicita elevação automaticamente quando necessário |
+
+---
+
+## 🖥️ Screenshots
+
+<div align="center">
+
+### Tela Inicial
+*Interface moderna com opções de instalação expressa ou personalizada*
+
+### Seleção de Programas  
+*Lista completa com checkboxes, badges e descrições*
+
+### Console de Instalação
+*Log em tempo real com barra de progresso*
+
+</div>
+
+---
+
+## 🚀 Instalação
 
 ### Pré-requisitos
 
-- Python 3.8 ou superior
-- Windows 10/11
+- **Python** 3.8 ou superior
+- **Windows** 10 ou 11
+- **Privilégios de Administrador** (para instalações)
 
-### Configuração Rápida
+### Opção 1: Executar do Código Fonte
 
 ```bash
 # 1. Clone o repositório
-git clone https://github.com/seu-usuario/autosetup-empresarial.git
-cd autosetup-empresarial
+git clone https://github.com/SamuelElse/AutoSetup-Empresarial.git
+cd AutoSetup-Empresarial
 
 # 2. Crie um ambiente virtual (recomendado)
 python -m venv venv
@@ -46,198 +82,237 @@ pip install -r requirements.txt
 python main.py
 ```
 
+### Opção 2: Baixar Executável
+
+Acesse a página de [Releases](https://github.com/SamuelElse/AutoSetup-Empresarial/releases) e baixe a versão mais recente do `AutoSetup_Empresarial.exe`.
+
+### Opção 3: Compilar seu Próprio Executável
+
+```bash
+# Execute o script de build
+python build.py
+
+# Ou com opções
+python build.py --clean      # Limpa builds anteriores
+python build.py --console    # Mantém console para debug
+```
+
+O executável será criado em `dist/AutoSetup_Empresarial.exe`
+
+---
+
+## 📖 Funcionalidades
+
+### ⚡ Instalação Expressa
+
+A instalação expressa executa todos os programas marcados como "essenciais" automaticamente.
+
+**Como usar:**
+1. Abra o aplicativo
+2. Clique em **"⚡ Instalação Expressa"**
+3. Aguarde a conclusão de todas as instalações
+
+**Programas padrão da instalação expressa:**
+- Google Chrome (navegador)
+- Adobe Acrobat Reader (leitor PDF)
+- 7-Zip (compactador)
+
+### 🎯 Instalação Personalizada
+
+Permite selecionar exatamente quais programas você deseja instalar.
+
+**Como usar:**
+1. Clique em **"🎯 Instalação Personalizada"**
+2. Marque os programas desejados na lista
+3. Use os botões "Selecionar Todos" ou "Limpar Seleção" para agilizar
+4. Clique em **"🚀 Instalar Selecionados"**
+
+### 📦 Gerenciar Instaladores
+
+Adicione, edite ou remova programas do catálogo de instalação.
+
+**Como adicionar um programa LOCAL:**
+1. Clique em **"📦 Gerenciar Instaladores"**
+2. Clique em **"➕ Adicionar Novo"**
+3. Selecione **"💾 Arquivo Local"**
+4. Clique em **"📂 Localizar"** e escolha o arquivo `.exe` ou `.msi`
+5. Preencha o nome e descrição
+6. Os argumentos silenciosos são detectados automaticamente
+7. Marque **"⚡ Incluir na Instalação Expressa"** se desejar
+8. Clique em **"💾 Salvar"**
+
+**Como adicionar um programa da NUVEM:**
+1. Clique em **"➕ Adicionar Novo"**
+2. Selecione **"☁️ URL da Nuvem"**
+3. Cole a URL direta do instalador
+4. Preencha o nome e descrição
+5. Clique em **"💾 Salvar"**
+
+> 💡 **Dica:** O arquivo será baixado automaticamente durante a instalação
+
+### ✏️ Editar Programa
+
+1. Na tela de gerenciamento, clique no ícone **✏️** do programa
+2. Modifique as informações desejadas
+3. Clique em **"💾 Salvar Alterações"**
+
+### 🗑️ Remover Programa
+
+1. Clique no ícone **🗑️** do programa
+2. Confirme a remoção no diálogo
+
+---
+
+## 🔧 Silent Switches (Argumentos Silenciosos)
+
+Os "silent switches" são argumentos que fazem instaladores rodarem sem interação do usuário.
+
+### Como Descobrir os Switches
+
+**Método 1 - Linha de comando:**
+```bash
+instalador.exe /?
+instalador.exe /help
+instalador.exe --help
+```
+
+**Método 2 - Pesquisa online:**
+```
+"nome do programa" silent install switches
+```
+
+**Método 3 - Sites especializados:**
+- [SilentInstallHQ](https://silentinstallhq.com/)
+- [ITNinja](https://www.itninja.com/software)
+
+### Tabela de Referência Rápida
+
+| Tipo de Instalador | Switches Comuns | Exemplo |
+|-------------------|-----------------|---------|
+| **MSI** (.msi) | `/qn /norestart` | `msiexec /i app.msi /qn` |
+| **NSIS** | `/S` (maiúsculo!) | `app.exe /S` |
+| **Inno Setup** | `/VERYSILENT /SUPPRESSMSGBOXES /NORESTART` | `setup.exe /VERYSILENT` |
+| **InstallShield** | `/s /v"/qn"` | `setup.exe /s /v"/qn"` |
+
+### Switches por Programa
+
+| Programa | Switch |
+|----------|--------|
+| Google Chrome | `/silent /install` |
+| Firefox | `-ms` |
+| Adobe Reader | `/sAll /rs /msi EULA_ACCEPT=YES` |
+| 7-Zip | `/S` |
+| WinRAR | `/S` |
+| VLC | `/S /L=1046` |
+| VS Code | `/VERYSILENT /NORESTART /MERGETASKS=!runcode` |
+| Git | `/VERYSILENT /NORESTART` |
+| Node.js | `/qn` |
+| Python | `/quiet InstallAllUsers=1 PrependPath=1` |
+| AnyDesk | `--install` |
+| TeamViewer | `/S` |
+
 ---
 
 ## 📁 Estrutura do Projeto
 
 ```
-autosetup-empresarial/
-├── main.py                        # Código principal da aplicação
-├── requirements.txt               # Dependências Python
-├── build.bat                      # Script de compilação
-├── AutoSetup_Empresarial.spec     # Configuração avançada do PyInstaller
-├── installers/                    # 📦 Coloque os instaladores aqui
-│   ├── ChromeSetup.exe
-│   ├── 7z_installer.exe
-│   ├── AcroRdrDC.exe
-│   └── ...
-└── README.md
+AutoSetup-Empresarial/
+├── 📄 main.py                 # Aplicação principal
+├── 📄 build.py                # Script de compilação
+├── 📄 requirements.txt        # Dependências Python
+├── 📄 LICENSE                 # Licença MIT
+├── 📄 README.md               # Esta documentação
+├── 📄 CONTRIBUTING.md         # Guia de contribuição
+├── 📄 .gitignore              # Arquivos ignorados pelo Git
+└── 📁 installers/             # Pasta para instaladores locais
+    └── .gitkeep               # Mantém a pasta no repositório
 ```
+
+### Arquivos Gerados em Runtime
+
+| Arquivo | Descrição |
+|---------|-----------|
+| `software_catalog.json` | Catálogo de programas (persistido localmente) |
+| `build/` | Arquivos temporários de compilação |
+| `dist/` | Executável compilado |
 
 ---
 
-## ➕ Adicionando Novos Programas
+## 🛠️ Tecnologias Utilizadas
 
-### Passo 1: Obtenha o Instalador
-
-Baixe o instalador offline do programa desejado e coloque na pasta `installers/`.
-
-### Passo 2: Descubra os Silent Switches
-
-Os "silent switches" são argumentos que fazem a instalação rodar sem interação do usuário.
-
-#### Métodos para Descobrir:
-
-1. **Execute no CMD:**
-   ```bash
-   instalador.exe /?
-   instalador.exe /help
-   instalador.exe --help
-   ```
-
-2. **Pesquise no Google:**
-   ```
-   "nome do programa" silent install switches
-   ```
-
-3. **Sites Especializados:**
-   - [SilentInstallHQ](https://silentinstallhq.com/)
-   - [ITNinja](https://www.itninja.com/software)
-
-#### Switches Comuns por Tipo de Instalador:
-
-| Tipo de Instalador | Switches Típicos |
-|-------------------|------------------|
-| **MSI** (.msi) | `/qn` `/quiet` `/passive` `/norestart` |
-| **NSIS** | `/S` (maiúsculo!) `/D=C:\caminho` |
-| **Inno Setup** | `/VERYSILENT` `/SUPPRESSMSGBOXES` `/NORESTART` |
-| **InstallShield** | `/s` `/v"/qn"` `/SMS` |
-
-### Passo 3: Adicione ao Catálogo
-
-Edite o `SOFTWARE_CATALOG` no arquivo `main.py`:
-
-```python
-SOFTWARE_CATALOG = [
-    # ... outros programas ...
-    
-    {
-        "id": "meu_programa",           # ID único (sem espaços)
-        "name": "Meu Programa Legal",   # Nome exibido na interface
-        "filename": "meu_instalador.exe",  # Nome do arquivo em installers/
-        "args": ["/VERYSILENT", "/NORESTART"],  # Argumentos silenciosos
-        "is_express": False,            # True = aparece na instalação expressa
-        "description": "Descrição do programa"  # Descrição opcional
-    },
-]
-```
+- **[Python 3.8+](https://python.org)** - Linguagem de programação
+- **[CustomTkinter](https://github.com/TomSchimansky/CustomTkinter)** - Interface gráfica moderna
+- **[Pillow](https://pillow.readthedocs.io/)** - Processamento de imagens
+- **[PyInstaller](https://pyinstaller.org/)** - Empacotador para executável
 
 ---
 
-## 📦 Compilando o Executável
-
-### Método Simples (Recomendado)
-
-Execute o script de build:
-
-```bash
-build.bat
-```
-
-O executável será criado em `dist/AutoSetup_Empresarial.exe`
-
-### Método Manual
-
-```bash
-pyinstaller --onefile --noconsole --add-data "installers;installers" main.py
-```
-
-### Método Avançado (Com Spec File)
-
-```bash
-pyinstaller AutoSetup_Empresarial.spec
-```
-
----
-
-## 🎨 Interface
-
-O aplicativo possui 3 telas principais:
-
-### Tela 1 - Home
-- Botão de **Instalação Expressa** (programas essenciais)
-- Botão de **Instalação Personalizada**
-
-### Tela 2 - Seleção
-- Lista de checkboxes com todos os programas
-- Botões de "Selecionar Todos" e "Limpar Seleção"
-- Badge "EXPRESS" nos programas padrão
-
-### Tela 3 - Execução
-- Barra de progresso em tempo real
-- Console de logs com cores
-- Indicadores de sucesso/erro por programa
-
----
-
-## ⚙️ Catálogo Padrão
-
-| Programa | Arquivo | Express |
-|----------|---------|---------|
-| Google Chrome | `ChromeSetup.exe` | ✅ |
-| Adobe Reader DC | `AcroRdrDC.exe` | ✅ |
-| 7-Zip | `7z_installer.exe` | ✅ |
-| WinRAR | `winrar.exe` | ❌ |
-| Node.js LTS | `node.msi` | ❌ |
-
----
-
-## 🔧 Dicas Avançadas
-
-### Executar como Administrador
-
-Para instalações que requerem privilégios elevados, execute o programa como Administrador:
-
-```bash
-# Ou clique com botão direito > "Executar como administrador"
-```
-
-### Personalizar o Ícone
-
-1. Coloque um arquivo `icon.ico` na raiz do projeto
-2. Recompile com `build.bat`
-
-### Adicionar Informações de Versão
-
-Crie um arquivo `version_info.txt` seguindo o formato do PyInstaller para incluir metadados no executável.
-
----
-
-## 🐛 Troubleshooting
+## 🐛 Solução de Problemas
 
 ### "Arquivo não encontrado"
 - Verifique se o instalador está na pasta `installers/`
-- Confirme que o `filename` no catálogo corresponde exatamente
+- Confirme que o nome do arquivo no catálogo está correto
 
 ### "Instalação falhou (código X)"
-- Verifique se os switches estão corretos
-- Alguns programas requerem execução como Administrador
-- Código 3010 = sucesso com reinicialização pendente
+- Verifique se os switches silenciosos estão corretos
+- Execute como Administrador
+- **Código 3010** = Sucesso, mas reinicialização necessária
 
-### Interface não abre
-- Certifique-se que CustomTkinter está instalado
-- Verifique erros no console: `python main.py`
+### "Interface não abre"
+- Verifique se CustomTkinter está instalado: `pip install customtkinter`
+- Execute pelo terminal para ver erros: `python main.py`
 
----
-
-## 📄 Licença
-
-Este projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para mais detalhes.
+### "Download falhou"
+- Verifique se a URL está acessível
+- Algumas URLs requerem autenticação ou bloqueiam downloads automatizados
+- Tente baixar manualmente e usar como arquivo local
 
 ---
 
 ## 🤝 Contribuindo
 
-Contribuições são bem-vindas! Sinta-se à vontade para:
+Contribuições são muito bem-vindas! Veja o arquivo [CONTRIBUTING.md](CONTRIBUTING.md) para detalhes sobre como contribuir.
 
-1. Fazer um Fork do projeto
-2. Criar uma Branch para sua feature (`git checkout -b feature/NovaFeature`)
-3. Commit suas mudanças (`git commit -m 'Adiciona NovaFeature'`)
-4. Push para a Branch (`git push origin feature/NovaFeature`)
-5. Abrir um Pull Request
+### Formas de Contribuir
+
+- 🐛 Reportar bugs
+- 💡 Sugerir novas funcionalidades
+- 📝 Melhorar a documentação
+- 🔧 Enviar pull requests
+- ⭐ Dar uma estrela no repositório
 
 ---
 
-<p align="center">
-  Feito com ❤️ para facilitar a vida do profissional de TI
-</p>
+## 📄 Licença
+
+Este projeto está licenciado sob a **MIT License** - veja o arquivo [LICENSE](LICENSE) para detalhes.
+
+---
+
+## 👤 Autor
+
+<div align="center">
+
+**Samuel Else**
+
+[![GitHub](https://img.shields.io/badge/GitHub-SamuelElse-181717?style=for-the-badge&logo=github)](https://github.com/SamuelElse)
+
+</div>
+
+---
+
+## 🙏 Agradecimentos
+
+- [CustomTkinter](https://github.com/TomSchimansky/CustomTkinter) pela excelente biblioteca de UI
+- [SilentInstallHQ](https://silentinstallhq.com/) pela documentação de switches
+- Comunidade open-source por todo o suporte
+
+---
+
+<div align="center">
+
+**⭐ Se este projeto te ajudou, considere dar uma estrela!**
+
+Feito com ❤️ por [Samuel Else](https://github.com/SamuelElse)
+
+</div>
