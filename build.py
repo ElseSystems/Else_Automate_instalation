@@ -51,26 +51,26 @@ class Colors:
 def print_header():
     """Exibe o cabeçalho do build"""
     print(f"""
-{Colors.CYAN}╔══════════════════════════════════════════════════════════════════╗
-║           AutoSetup Empresarial - Build System                   ║
-╚══════════════════════════════════════════════════════════════════╝{Colors.ENDC}
+{Colors.CYAN}================================================================
+         AutoSetup Empresarial - Build System                   
+================================================================{Colors.ENDC}
 """)
 
 
 def print_success(message: str):
-    print(f"{Colors.GREEN}✅ {message}{Colors.ENDC}")
+    print(f"{Colors.GREEN}[OK] {message}{Colors.ENDC}")
 
 
 def print_error(message: str):
-    print(f"{Colors.FAIL}❌ {message}{Colors.ENDC}")
+    print(f"{Colors.FAIL}[ERRO] {message}{Colors.ENDC}")
 
 
 def print_warning(message: str):
-    print(f"{Colors.WARNING}⚠️  {message}{Colors.ENDC}")
+    print(f"{Colors.WARNING}[AVISO] {message}{Colors.ENDC}")
 
 
 def print_info(message: str):
-    print(f"{Colors.BLUE}ℹ️  {message}{Colors.ENDC}")
+    print(f"{Colors.BLUE}[INFO] {message}{Colors.ENDC}")
 
 
 def check_python():
@@ -146,7 +146,7 @@ def get_installers():
         print_info(f"Instaladores encontrados ({len(installers)}):")
         for installer in installers:
             size_mb = installer.stat().st_size / (1024 * 1024)
-            print(f"    📦 {installer.name} ({size_mb:.1f} MB)")
+            print(f"    -> {installer.name} ({size_mb:.1f} MB)")
     else:
         print_warning("Nenhum instalador encontrado na pasta 'installers/'")
         print_warning("O executável será criado sem instaladores embutidos.")
@@ -164,12 +164,12 @@ def clean_build():
     for dir_name in dirs_to_clean:
         if Path(dir_name).exists():
             shutil.rmtree(dir_name)
-            print(f"    🗑️  Removido: {dir_name}/")
+            print(f"    Removido: {dir_name}/")
     
     for file_name in files_to_clean:
         if Path(file_name).exists():
             Path(file_name).unlink()
-            print(f"    🗑️  Removido: {file_name}")
+            print(f"    Removido: {file_name}")
     
     print_success("Limpeza concluída")
 
@@ -219,9 +219,9 @@ def build_executable(console: bool = False):
     args.append(MAIN_SCRIPT)
     
     print()
-    print(f"{Colors.CYAN}{'═' * 60}{Colors.ENDC}")
+    print(f"{Colors.CYAN}{'=' * 60}{Colors.ENDC}")
     print(f"{Colors.BOLD}Executando PyInstaller...{Colors.ENDC}")
-    print(f"{Colors.CYAN}{'═' * 60}{Colors.ENDC}")
+    print(f"{Colors.CYAN}{'=' * 60}{Colors.ENDC}")
     print()
     
     # Executa PyInstaller
@@ -238,28 +238,28 @@ def show_result():
     exe_path = Path("dist") / f"{APP_NAME}.exe"
     
     print()
-    print(f"{Colors.CYAN}{'═' * 60}{Colors.ENDC}")
+    print(f"{Colors.CYAN}{'=' * 60}{Colors.ENDC}")
     
     if exe_path.exists():
         size_mb = exe_path.stat().st_size / (1024 * 1024)
         
         print(f"""
-{Colors.GREEN}{Colors.BOLD}╔══════════════════════════════════════════════════════════════════╗
-║                    BUILD CONCLUÍDO COM SUCESSO!                  ║
-╠══════════════════════════════════════════════════════════════════╣
-║                                                                  ║
-║  📁 Executável criado em:                                        ║
-║     {str(exe_path):<55} ║
-║                                                                  ║
-║  📊 Tamanho: {size_mb:>6.1f} MB                                          ║
-║                                                                  ║
-║  🛡️  O executável solicita privilégios de administrador         ║
-║                                                                  ║
-╚══════════════════════════════════════════════════════════════════╝{Colors.ENDC}
+{Colors.GREEN}{Colors.BOLD}================================================================
+              BUILD CONCLUIDO COM SUCESSO!                  
+================================================================
+
+  Executavel criado em:
+     {str(exe_path)}
+
+  Tamanho: {size_mb:.1f} MB
+
+  O executavel solicita privilegios de administrador
+
+================================================================{Colors.ENDC}
 """)
         return True
     else:
-        print_error("Executável não foi criado!")
+        print_error("Executavel nao foi criado!")
         return False
 
 

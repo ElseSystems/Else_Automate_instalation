@@ -29,6 +29,7 @@ import urllib.request
 import urllib.error
 import ssl
 import ctypes
+import webbrowser
 from tkinter import filedialog
 from typing import List, Dict, Optional, Callable
 from datetime import datetime
@@ -118,13 +119,28 @@ from customtkinter import CTkImage
 from PIL import Image
 
 # ══════════════════════════════════════════════════════════════════════════════
-# CONFIGURAÇÃO DO PYINSTALLER - RESOURCE PATH
+# CONFIGURAÇÃO DE CAMINHOS - MODO PORTÁTIL (PENDRIVE)
 # ══════════════════════════════════════════════════════════════════════════════
+
+def get_exe_directory() -> str:
+    """
+    Retorna o diretório onde o executável está localizado.
+    Funciona tanto em desenvolvimento quanto compilado.
+    
+    MODO PORTÁTIL: Sempre usa o diretório do executável/script,
+    permitindo que o programa rode de um pendrive.
+    """
+    if getattr(sys, 'frozen', False):
+        # Executável compilado - usa o diretório do .exe
+        return os.path.dirname(sys.executable)
+    else:
+        # Rodando como script Python
+        return os.path.dirname(os.path.abspath(__file__))
+
 
 def resource_path(relative_path: str) -> str:
     """
-    Retorna o caminho absoluto para recursos, funciona tanto em desenvolvimento
-    quanto quando compilado com PyInstaller.
+    Retorna o caminho absoluto para recursos embutidos no executável.
     """
     try:
         base_path = sys._MEIPASS
@@ -137,27 +153,22 @@ def resource_path(relative_path: str) -> str:
 def get_app_data_path() -> str:
     """
     Retorna o caminho para dados persistentes da aplicação.
-    Em desenvolvimento: pasta do script
-    Compilado: pasta AppData do usuário
-    """
-    try:
-        sys._MEIPASS
-        app_data = os.path.join(os.environ.get('APPDATA', ''), 'AutoSetupEmpresarial')
-    except AttributeError:
-        app_data = os.path.dirname(os.path.abspath(__file__))
     
-    os.makedirs(app_data, exist_ok=True)
+    MODO PORTÁTIL: Usa o mesmo diretório do executável,
+    não usa AppData. Permite rodar de pendrive.
+    """
+    app_data = get_exe_directory()
     return app_data
 
 
 def get_installers_path() -> str:
-    """Retorna o caminho da pasta de instaladores"""
-    try:
-        sys._MEIPASS
-        path = os.path.join(get_app_data_path(), "installers")
-    except AttributeError:
-        path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "installers")
+    """
+    Retorna o caminho da pasta de instaladores.
     
+    MODO PORTÁTIL: A pasta 'installers' fica no mesmo
+    diretório do executável (ex: pendrive).
+    """
+    path = os.path.join(get_exe_directory(), "installers")
     os.makedirs(path, exist_ok=True)
     return path
 
@@ -782,6 +793,25 @@ class AutoSetupApp(ctk.CTk):
         self.clear_container()
         self.refresh_software_vars()
         
+        # Botão de ajuda no canto superior direito
+        help_frame = ctk.CTkFrame(self.main_container, fg_color="transparent")
+        help_frame.pack(fill="x", anchor="ne")
+        
+        help_btn = ctk.CTkButton(
+            help_frame,
+            text="?",
+            font=ctk.CTkFont(size=18, weight="bold"),
+            width=40,
+            height=40,
+            corner_radius=20,
+            fg_color=self.COLORS["bg_card"],
+            hover_color=self.COLORS["accent"],
+            border_width=2,
+            border_color=self.COLORS["border"],
+            command=self.show_help_screen
+        )
+        help_btn.pack(side="right", padx=5, pady=5)
+        
         center_frame = ctk.CTkFrame(self.main_container, fg_color="transparent")
         center_frame.place(relx=0.5, rely=0.5, anchor="center")
         
@@ -874,13 +904,60 @@ class AutoSetupApp(ctk.CTk):
         footer_frame = ctk.CTkFrame(self.main_container, fg_color="transparent")
         footer_frame.pack(side="bottom", fill="x", pady=(0, 10))
         
-        footer_label = ctk.CTkLabel(
+        # Dica
+        tip_label = ctk.CTkLabel(
             footer_frame,
             text="💡 Dica: Use 'Gerenciar Instaladores' para adicionar programas locais ou da nuvem",
             font=ctk.CTkFont(size=11),
             text_color=self.COLORS["text_muted"]
         )
-        footer_label.pack()
+        tip_label.pack(pady=(0, 15))
+        
+        # Separador
+        separator = ctk.CTkFrame(footer_frame, fg_color=self.COLORS["border"], height=1, width=300)
+        separator.pack(pady=(0, 10))
+        
+        # Desenvolvido por ELSE SYSTEMS
+        dev_frame = ctk.CTkFrame(footer_frame, fg_color="transparent")
+        dev_frame.pack()
+        
+        # Ícone de código </> em verde
+        code_icon = ctk.CTkLabel(
+            dev_frame,
+            text="</>",
+            font=ctk.CTkFont(size=14, weight="bold"),
+            text_color="#22c55e"  # Verde
+        )
+        code_icon.pack(side="left", padx=(0, 8))
+        
+        # Texto clicável com sublinhado
+        dev_label = ctk.CTkLabel(
+            dev_frame,
+            text="Desenvolvido por ELSE SYSTEMS LTDA",
+            font=ctk.CTkFont(size=12, underline=True),
+            text_color=self.COLORS["text_muted"],
+            cursor="hand2"
+        )
+        dev_label.pack(side="left")
+        
+        # Bind para abrir o link ao clicar
+        def open_else_website(event=None):
+            webbrowser.open("https://elsesystems.com")
+        
+        dev_label.bind("<Button-1>", open_else_website)
+        code_icon.bind("<Button-1>", open_else_website)
+        
+        # Efeito hover para mudar cor
+        def on_enter(event):
+            dev_label.configure(text_color="#22c55e")
+        
+        def on_leave(event):
+            dev_label.configure(text_color=self.COLORS["text_muted"])
+        
+        dev_label.bind("<Enter>", on_enter)
+        dev_label.bind("<Leave>", on_leave)
+        code_icon.bind("<Enter>", on_enter)
+        code_icon.bind("<Leave>", on_leave)
     
     # ═══════════════════════════════════════════════════════════════════════
     # TELA 2: SELEÇÃO DE SOFTWARE
@@ -1163,7 +1240,7 @@ class AutoSetupApp(ctk.CTk):
         
         if not catalog_manager.catalog:
             empty_frame = ctk.CTkFrame(self.manage_scroll_frame, fg_color="transparent")
-            empty_frame.pack(fill="both", expand=True, pady=50)
+            empty_frame.pack(fill="both", expand=True, pady=30)
             
             empty_icon = ctk.CTkLabel(empty_frame, text="📭", font=ctk.CTkFont(size=48))
             empty_icon.pack()
@@ -1171,14 +1248,77 @@ class AutoSetupApp(ctk.CTk):
             empty_label = ctk.CTkLabel(
                 empty_frame,
                 text="Nenhum instalador cadastrado",
-                font=ctk.CTkFont(size=16),
-                text_color=self.COLORS["text_muted"]
+                font=ctk.CTkFont(size=16, weight="bold"),
+                text_color=self.COLORS["text"]
             )
             empty_label.pack(pady=(10, 5))
             
+            # Instruções detalhadas
+            instructions_frame = ctk.CTkFrame(empty_frame, fg_color=self.COLORS["bg_card"], corner_radius=10)
+            instructions_frame.pack(pady=15, padx=20, fill="x")
+            
+            step1 = ctk.CTkLabel(
+                instructions_frame,
+                text="📁 Passo 1: Coloque os instaladores (.exe/.msi) na pasta 'installers'",
+                font=ctk.CTkFont(size=12),
+                text_color=self.COLORS["text_muted"],
+                anchor="w"
+            )
+            step1.pack(pady=(15, 5), padx=15, anchor="w")
+            
+            path_hint = ctk.CTkLabel(
+                instructions_frame,
+                text="(mesma pasta onde está este programa)",
+                font=ctk.CTkFont(size=11),
+                text_color=self.COLORS["accent"],
+                anchor="w"
+            )
+            path_hint.pack(pady=(0, 5), padx=25, anchor="w")
+            
+            path_label = ctk.CTkLabel(
+                instructions_frame,
+                text=f"Caminho atual: {get_installers_path()}",
+                font=ctk.CTkFont(family="Consolas", size=10),
+                text_color=self.COLORS["text_muted"],
+                anchor="w"
+            )
+            path_label.pack(pady=(0, 10), padx=25, anchor="w")
+            
+            step2 = ctk.CTkLabel(
+                instructions_frame,
+                text="➕ Passo 2: Clique em 'Adicionar Novo' para cadastrar cada programa",
+                font=ctk.CTkFont(size=12),
+                text_color=self.COLORS["text_muted"],
+                anchor="w"
+            )
+            step2.pack(pady=(5, 5), padx=15, anchor="w")
+            
+            step3 = ctk.CTkLabel(
+                instructions_frame,
+                text="☁️ Dica: Você também pode usar URLs para baixar da nuvem!",
+                font=ctk.CTkFont(size=12),
+                text_color=self.COLORS["cloud"],
+                anchor="w"
+            )
+            step3.pack(pady=(5, 15), padx=15, anchor="w")
+            
+            # Botão para abrir a pasta
+            open_folder_btn = ctk.CTkButton(
+                empty_frame,
+                text="📂  Abrir Pasta de Instaladores",
+                font=ctk.CTkFont(size=13, weight="bold"),
+                width=220,
+                height=40,
+                corner_radius=8,
+                fg_color=self.COLORS["accent"],
+                hover_color=self.COLORS["accent_hover"],
+                command=self.open_installers_folder
+            )
+            open_folder_btn.pack(pady=(5, 10))
+            
             empty_hint = ctk.CTkLabel(
                 empty_frame,
-                text="Clique em '➕ Adicionar Novo' para começar",
+                text="Após adicionar os arquivos, clique em '➕ Adicionar Novo'",
                 font=ctk.CTkFont(size=13),
                 text_color=self.COLORS["text_muted"]
             )
@@ -2527,6 +2667,233 @@ class AutoSetupApp(ctk.CTk):
             hover_color=btn_color,
             state="normal"
         )
+    
+    # ═══════════════════════════════════════════════════════════════════════
+    # MÉTODOS UTILITÁRIOS
+    # ═══════════════════════════════════════════════════════════════════════
+    
+    def open_installers_folder(self):
+        """Abre a pasta de instaladores no explorador de arquivos"""
+        folder_path = get_installers_path()
+        try:
+            os.startfile(folder_path)
+        except Exception as e:
+            self.show_error_dialog(f"Erro ao abrir pasta: {e}")
+    
+    # ═══════════════════════════════════════════════════════════════════════
+    # TELA DE AJUDA - TUTORIAL PARA USUÁRIOS
+    # ═══════════════════════════════════════════════════════════════════════
+    
+    def show_help_screen(self):
+        """Exibe a tela de ajuda com tutorial completo para usuários"""
+        dialog = ctk.CTkToplevel(self)
+        dialog.title("Como Usar o AutoSetup")
+        dialog.geometry("700x600")
+        dialog.resizable(False, True)
+        dialog.minsize(700, 500)
+        dialog.transient(self)
+        dialog.grab_set()
+        
+        dialog.update_idletasks()
+        x = self.winfo_x() + (self.winfo_width() - 700) // 2
+        y = self.winfo_y() + (self.winfo_height() - 600) // 2
+        dialog.geometry(f"+{x}+{y}")
+        
+        dialog.configure(fg_color=self.COLORS["bg_dark"])
+        
+        # Título
+        header_frame = ctk.CTkFrame(dialog, fg_color=self.COLORS["bg_card"], corner_radius=0)
+        header_frame.pack(fill="x")
+        
+        title_label = ctk.CTkLabel(
+            header_frame,
+            text="📖  Como Usar o AutoSetup",
+            font=ctk.CTkFont(size=22, weight="bold"),
+            text_color=self.COLORS["text"]
+        )
+        title_label.pack(pady=20)
+        
+        # Conteúdo scrollável
+        content_scroll = ctk.CTkScrollableFrame(
+            dialog,
+            fg_color="transparent",
+            scrollbar_button_color=self.COLORS["bg_hover"],
+            scrollbar_button_hover_color=self.COLORS["accent"]
+        )
+        content_scroll.pack(fill="both", expand=True, padx=20, pady=10)
+        
+        # ═══════════════════════════════════════════════════════════════
+        # SEÇÃO 1: O QUE É O AUTOSETUP
+        # ═══════════════════════════════════════════════════════════════
+        
+        self._add_help_section(
+            content_scroll,
+            "🤔  O que é o AutoSetup?",
+            "O AutoSetup é um programa que instala vários softwares de uma vez só, "
+            "sem você precisar ficar clicando 'Avançar' em cada instalador.\n\n"
+            "Ideal para quando você formata o computador e precisa instalar "
+            "Chrome, WinRAR, leitor de PDF, etc."
+        )
+        
+        # ═══════════════════════════════════════════════════════════════
+        # SEÇÃO 2: INSTALAÇÃO EXPRESSA
+        # ═══════════════════════════════════════════════════════════════
+        
+        self._add_help_section(
+            content_scroll,
+            "⚡  Instalação Expressa",
+            "Use esta opção para instalar rapidamente os programas mais comuns.\n\n"
+            "Como usar:\n"
+            "1. Clique no botão 'Instalação Expressa'\n"
+            "2. Aguarde enquanto os programas são instalados\n"
+            "3. Pronto! Todos os programas essenciais estarão instalados\n\n"
+            "Dica: Os programas marcados como 'EXPRESS' serão instalados automaticamente."
+        )
+        
+        # ═══════════════════════════════════════════════════════════════
+        # SEÇÃO 3: INSTALAÇÃO PERSONALIZADA
+        # ═══════════════════════════════════════════════════════════════
+        
+        self._add_help_section(
+            content_scroll,
+            "🎯  Instalação Personalizada",
+            "Use esta opção para escolher exatamente quais programas instalar.\n\n"
+            "Como usar:\n"
+            "1. Clique em 'Instalação Personalizada'\n"
+            "2. Marque os programas que deseja instalar\n"
+            "3. Use 'Selecionar Todos' ou 'Limpar Seleção' para agilizar\n"
+            "4. Clique em 'Instalar Selecionados'\n"
+            "5. Aguarde a conclusão"
+        )
+        
+        # ═══════════════════════════════════════════════════════════════
+        # SEÇÃO 4: GERENCIAR INSTALADORES
+        # ═══════════════════════════════════════════════════════════════
+        
+        self._add_help_section(
+            content_scroll,
+            "📦  Gerenciar Instaladores",
+            "Aqui você adiciona, edita ou remove programas da lista.\n\n"
+            "Para adicionar um programa do seu computador:\n"
+            "1. Clique em 'Gerenciar Instaladores'\n"
+            "2. Clique em '+ Adicionar Novo'\n"
+            "3. Escolha 'Arquivo Local'\n"
+            "4. Clique em 'Localizar' e selecione o instalador (.exe ou .msi)\n"
+            "5. Dê um nome ao programa\n"
+            "6. Clique em 'Salvar'\n\n"
+            "Para adicionar um programa da internet:\n"
+            "1. Escolha 'URL da Nuvem'\n"
+            "2. Cole o link direto do instalador\n"
+            "3. O programa será baixado automaticamente na hora de instalar"
+        )
+        
+        # ═══════════════════════════════════════════════════════════════
+        # SEÇÃO 5: ONDE FICAM OS INSTALADORES
+        # ═══════════════════════════════════════════════════════════════
+        
+        self._add_help_section(
+            content_scroll,
+            "📁  Onde ficam os instaladores?",
+            "MODO PORTÁTIL (PENDRIVE):\n\n"
+            "Os instaladores devem estar na pasta 'installers' no MESMO local "
+            "onde está o executável do AutoSetup.\n\n"
+            "Exemplo de organização no pendrive:\n"
+            "   📁 Pendrive (E:)\n"
+            "   ├── AutoSetup_Empresarial.exe\n"
+            "   └── 📁 installers\n"
+            "       ├── ChromeSetup.exe\n"
+            "       ├── WinRAR.exe\n"
+            "       └── outros instaladores...\n\n"
+            "Dica: Use o botão 'Abrir Pasta de Instaladores' para acessar rapidamente!"
+        )
+        
+        # ═══════════════════════════════════════════════════════════════
+        # SEÇÃO 6: DICAS IMPORTANTES
+        # ═══════════════════════════════════════════════════════════════
+        
+        self._add_help_section(
+            content_scroll,
+            "💡  Dicas Importantes",
+            "• Execute o programa como Administrador para evitar erros\n\n"
+            "• Alguns antivírus podem bloquear instalações silenciosas - "
+            "desative temporariamente se necessário\n\n"
+            "• Se uma instalação falhar, verifique se o arquivo do instalador "
+            "está correto e não está corrompido\n\n"
+            "• O código de erro 3010 significa sucesso, mas precisa reiniciar o PC\n\n"
+            "• Programas da nuvem precisam de conexão com a internet"
+        )
+        
+        # ═══════════════════════════════════════════════════════════════
+        # SEÇÃO 7: SUPORTE
+        # ═══════════════════════════════════════════════════════════════
+        
+        support_frame = ctk.CTkFrame(content_scroll, fg_color=self.COLORS["bg_card"], corner_radius=10)
+        support_frame.pack(fill="x", pady=(15, 5))
+        
+        support_title = ctk.CTkLabel(
+            support_frame,
+            text="🆘  Precisa de ajuda?",
+            font=ctk.CTkFont(size=15, weight="bold"),
+            text_color=self.COLORS["accent"]
+        )
+        support_title.pack(pady=(15, 5), padx=15, anchor="w")
+        
+        support_text = ctk.CTkLabel(
+            support_frame,
+            text="Entre em contato com a ELSE SYSTEMS para suporte técnico.",
+            font=ctk.CTkFont(size=13),
+            text_color=self.COLORS["text_muted"],
+            wraplength=600,
+            justify="left"
+        )
+        support_text.pack(pady=(0, 5), padx=15, anchor="w")
+        
+        support_link = ctk.CTkLabel(
+            support_frame,
+            text="🌐 elsesystems.com",
+            font=ctk.CTkFont(size=13, underline=True),
+            text_color=self.COLORS["cloud"],
+            cursor="hand2"
+        )
+        support_link.pack(pady=(0, 15), padx=15, anchor="w")
+        support_link.bind("<Button-1>", lambda e: webbrowser.open("https://elsesystems.com"))
+        
+        # Botão fechar
+        close_btn = ctk.CTkButton(
+            dialog,
+            text="Entendi!",
+            font=ctk.CTkFont(size=15, weight="bold"),
+            width=150,
+            height=45,
+            corner_radius=10,
+            fg_color=self.COLORS["accent"],
+            hover_color=self.COLORS["accent_hover"],
+            command=dialog.destroy
+        )
+        close_btn.pack(pady=20)
+    
+    def _add_help_section(self, parent, title: str, content: str):
+        """Adiciona uma seção de ajuda formatada"""
+        frame = ctk.CTkFrame(parent, fg_color=self.COLORS["bg_card"], corner_radius=10)
+        frame.pack(fill="x", pady=(0, 15))
+        
+        title_label = ctk.CTkLabel(
+            frame,
+            text=title,
+            font=ctk.CTkFont(size=15, weight="bold"),
+            text_color=self.COLORS["text"]
+        )
+        title_label.pack(pady=(15, 8), padx=15, anchor="w")
+        
+        content_label = ctk.CTkLabel(
+            frame,
+            text=content,
+            font=ctk.CTkFont(size=13),
+            text_color=self.COLORS["text_muted"],
+            wraplength=600,
+            justify="left"
+        )
+        content_label.pack(pady=(0, 15), padx=15, anchor="w")
     
     # ═══════════════════════════════════════════════════════════════════════
     # MÉTODOS DE INICIAÇÃO

@@ -12,11 +12,11 @@
 <br>
 
 **Automatize a instalação de softwares após formatar seu computador.**  
-*Uma ferramenta profissional para TI que economiza horas de trabalho.*
+*Uma ferramenta portátil para TI que economiza horas de trabalho.*
 
 <br>
 
-[📥 Download](#-instalação) • [📖 Documentação](#-funcionalidades) • [🤝 Contribuir](CONTRIBUTING.md) • [🐛 Reportar Bug](https://github.com/SamuelElse/AutoSetup-Empresarial/issues)
+[📥 Download](#-instalação) • [📖 Como Usar](#-como-usar) • [🤝 Contribuir](CONTRIBUTING.md) • [🐛 Reportar Bug](https://github.com/SamuelElse/AutoSetup-Empresarial/issues)
 
 </div>
 
@@ -24,47 +24,33 @@
 
 ## 📋 Sobre o Projeto
 
-O **AutoSetup Empresarial** é uma ferramenta desktop desenvolvida em Python que automatiza a instalação de softwares em computadores Windows. Ideal para profissionais de TI que precisam configurar múltiplas máquinas após formatação.
+O **AutoSetup Empresarial** é uma ferramenta desktop desenvolvida em Python que automatiza a instalação de softwares em computadores Windows. 
+
+**100% Portátil** - Coloque em um pendrive com os instaladores e use em qualquer computador!
 
 ### ✨ Destaques
 
 | Recurso | Descrição |
 |---------|-----------|
+| 💾 **Modo Portátil** | Funciona direto do pendrive, sem precisar instalar |
 | ⚡ **Instalação Expressa** | Configure um PC novo em minutos com softwares essenciais |
 | 🎯 **Instalação Personalizada** | Escolha exatamente quais programas instalar |
 | ☁️ **Download da Nuvem** | Baixe instaladores automaticamente de URLs |
-| 📦 **Executável Único** | Compile tudo em um único `.exe` portátil |
 | 🔇 **Modo Silencioso** | Instalações sem pop-ups ou interação manual |
+| ❓ **Ajuda Integrada** | Tutorial completo para usuários iniciantes |
 | 🛡️ **Privilégios Admin** | Solicita elevação automaticamente quando necessário |
-
----
-
-## 🖥️ Screenshots
-
-<div align="center">
-
-### Tela Inicial
-*Interface moderna com opções de instalação expressa ou personalizada*
-
-### Seleção de Programas  
-*Lista completa com checkboxes, badges e descrições*
-
-### Console de Instalação
-*Log em tempo real com barra de progresso*
-
-</div>
 
 ---
 
 ## 🚀 Instalação
 
-### Pré-requisitos
+### Opção 1: Baixar Executável (Recomendado)
 
-- **Python** 3.8 ou superior
-- **Windows** 10 ou 11
-- **Privilégios de Administrador** (para instalações)
+1. Acesse a página de [Releases](https://github.com/SamuelElse/AutoSetup-Empresarial/releases)
+2. Baixe `AutoSetup_Empresarial.exe`
+3. Pronto! Não precisa instalar nada
 
-### Opção 1: Executar do Código Fonte
+### Opção 2: Executar do Código Fonte
 
 ```bash
 # 1. Clone o repositório
@@ -82,117 +68,136 @@ pip install -r requirements.txt
 python main.py
 ```
 
-### Opção 2: Baixar Executável
-
-Acesse a página de [Releases](https://github.com/SamuelElse/AutoSetup-Empresarial/releases) e baixe a versão mais recente do `AutoSetup_Empresarial.exe`.
-
 ### Opção 3: Compilar seu Próprio Executável
 
 ```bash
-# Execute o script de build
-python build.py
-
-# Ou com opções
-python build.py --clean      # Limpa builds anteriores
-python build.py --console    # Mantém console para debug
+python build.py --clean
 ```
 
 O executável será criado em `dist/AutoSetup_Empresarial.exe`
 
 ---
 
-## 📖 Funcionalidades
+## 💾 Modo Portátil (Pendrive)
+
+O AutoSetup foi projetado para funcionar de forma **100% portátil**. Basta organizar os arquivos assim:
+
+```
+📁 Pendrive (E:) ou qualquer pasta
+├── AutoSetup_Empresarial.exe    ← O programa
+├── software_catalog.json        ← Criado automaticamente
+└── 📁 installers                ← Seus instaladores aqui
+    ├── ChromeSetup.exe
+    ├── WinRAR.exe
+    ├── AdobeReader.exe
+    └── outros...
+```
+
+> 💡 **Importante:** A pasta `installers` deve estar no **mesmo local** que o executável!
+
+---
+
+## 📖 Como Usar
+
+### Tela Inicial
+
+Ao abrir o programa, você verá 3 opções principais e um botão de ajuda:
+
+| Botão | Função |
+|-------|--------|
+| **?** (canto superior direito) | Abre o tutorial completo |
+| **⚡ Instalação Expressa** | Instala todos os programas marcados como essenciais |
+| **🎯 Instalação Personalizada** | Permite escolher quais programas instalar |
+| **📦 Gerenciar Instaladores** | Adicionar, editar ou remover programas |
+
+---
 
 ### ⚡ Instalação Expressa
 
-A instalação expressa executa todos os programas marcados como "essenciais" automaticamente.
+Instala automaticamente todos os programas marcados como "EXPRESS".
 
 **Como usar:**
-1. Abra o aplicativo
-2. Clique em **"⚡ Instalação Expressa"**
-3. Aguarde a conclusão de todas as instalações
+1. Clique em **"⚡ Instalação Expressa"**
+2. Aguarde enquanto os programas são instalados
+3. Pronto!
 
-**Programas padrão da instalação expressa:**
-- Google Chrome (navegador)
-- Adobe Acrobat Reader (leitor PDF)
-- 7-Zip (compactador)
+---
 
 ### 🎯 Instalação Personalizada
 
-Permite selecionar exatamente quais programas você deseja instalar.
+Escolha exatamente quais programas instalar.
 
 **Como usar:**
 1. Clique em **"🎯 Instalação Personalizada"**
-2. Marque os programas desejados na lista
-3. Use os botões "Selecionar Todos" ou "Limpar Seleção" para agilizar
+2. Marque os programas desejados
+3. Use **"Selecionar Todos"** ou **"Limpar Seleção"** para agilizar
 4. Clique em **"🚀 Instalar Selecionados"**
+
+---
 
 ### 📦 Gerenciar Instaladores
 
-Adicione, edite ou remova programas do catálogo de instalação.
+Adicione, edite ou remova programas do catálogo.
 
-**Como adicionar um programa LOCAL:**
+#### Adicionar Programa Local
+
 1. Clique em **"📦 Gerenciar Instaladores"**
 2. Clique em **"➕ Adicionar Novo"**
 3. Selecione **"💾 Arquivo Local"**
-4. Clique em **"📂 Localizar"** e escolha o arquivo `.exe` ou `.msi`
-5. Preencha o nome e descrição
+4. Clique em **"📂 Localizar"** e escolha o `.exe` ou `.msi`
+5. Dê um nome ao programa
 6. Os argumentos silenciosos são detectados automaticamente
 7. Marque **"⚡ Incluir na Instalação Expressa"** se desejar
 8. Clique em **"💾 Salvar"**
 
-**Como adicionar um programa da NUVEM:**
-1. Clique em **"➕ Adicionar Novo"**
-2. Selecione **"☁️ URL da Nuvem"**
-3. Cole a URL direta do instalador
-4. Preencha o nome e descrição
-5. Clique em **"💾 Salvar"**
+#### Adicionar Programa da Nuvem
 
-> 💡 **Dica:** O arquivo será baixado automaticamente durante a instalação
+1. Escolha **"☁️ URL da Nuvem"**
+2. Cole o link direto do instalador
+3. Preencha o nome
+4. O programa será baixado automaticamente na hora de instalar
 
-### ✏️ Editar Programa
+#### Abrir Pasta de Instaladores
 
-1. Na tela de gerenciamento, clique no ícone **✏️** do programa
-2. Modifique as informações desejadas
-3. Clique em **"💾 Salvar Alterações"**
+- Na tela de gerenciamento, clique em **"📂 Abrir Pasta de Instaladores"**
+- Isso abre a pasta onde você deve colocar os arquivos `.exe` e `.msi`
 
-### 🗑️ Remover Programa
+---
 
-1. Clique no ícone **🗑️** do programa
-2. Confirme a remoção no diálogo
+### ❓ Tela de Ajuda
+
+Clique no botão **"?"** no canto superior direito para ver o tutorial completo com:
+
+- O que é o AutoSetup
+- Como usar cada funcionalidade
+- Onde colocar os instaladores
+- Dicas importantes
+- Contato para suporte
 
 ---
 
 ## 🔧 Silent Switches (Argumentos Silenciosos)
 
-Os "silent switches" são argumentos que fazem instaladores rodarem sem interação do usuário.
+Os "silent switches" fazem instaladores rodarem sem interação do usuário.
 
-### Como Descobrir os Switches
+### Como Descobrir
 
-**Método 1 - Linha de comando:**
 ```bash
 instalador.exe /?
 instalador.exe /help
 instalador.exe --help
 ```
 
-**Método 2 - Pesquisa online:**
-```
-"nome do programa" silent install switches
-```
+Ou pesquise: `"nome do programa" silent install switches`
 
-**Método 3 - Sites especializados:**
-- [SilentInstallHQ](https://silentinstallhq.com/)
-- [ITNinja](https://www.itninja.com/software)
+### Tabela de Referência
 
-### Tabela de Referência Rápida
-
-| Tipo de Instalador | Switches Comuns | Exemplo |
-|-------------------|-----------------|---------|
-| **MSI** (.msi) | `/qn /norestart` | `msiexec /i app.msi /qn` |
-| **NSIS** | `/S` (maiúsculo!) | `app.exe /S` |
-| **Inno Setup** | `/VERYSILENT /SUPPRESSMSGBOXES /NORESTART` | `setup.exe /VERYSILENT` |
-| **InstallShield** | `/s /v"/qn"` | `setup.exe /s /v"/qn"` |
+| Tipo de Instalador | Switches Comuns |
+|-------------------|-----------------|
+| **MSI** (.msi) | `/qn /norestart` |
+| **NSIS** | `/S` (maiúsculo!) |
+| **Inno Setup** | `/VERYSILENT /SUPPRESSMSGBOXES /NORESTART` |
+| **InstallShield** | `/s /v"/qn"` |
 
 ### Switches por Programa
 
@@ -224,17 +229,15 @@ AutoSetup-Empresarial/
 ├── 📄 README.md               # Esta documentação
 ├── 📄 CONTRIBUTING.md         # Guia de contribuição
 ├── 📄 .gitignore              # Arquivos ignorados pelo Git
-└── 📁 installers/             # Pasta para instaladores locais
-    └── .gitkeep               # Mantém a pasta no repositório
+└── 📁 installers/             # Pasta para instaladores
+    └── .gitkeep
 ```
 
 ### Arquivos Gerados em Runtime
 
 | Arquivo | Descrição |
 |---------|-----------|
-| `software_catalog.json` | Catálogo de programas (persistido localmente) |
-| `build/` | Arquivos temporários de compilação |
-| `dist/` | Executável compilado |
+| `software_catalog.json` | Catálogo de programas (salvo na mesma pasta do .exe) |
 
 ---
 
@@ -250,28 +253,28 @@ AutoSetup-Empresarial/
 ## 🐛 Solução de Problemas
 
 ### "Arquivo não encontrado"
-- Verifique se o instalador está na pasta `installers/`
+- Verifique se a pasta `installers` está no **mesmo local** que o executável
 - Confirme que o nome do arquivo no catálogo está correto
 
 ### "Instalação falhou (código X)"
 - Verifique se os switches silenciosos estão corretos
 - Execute como Administrador
-- **Código 3010** = Sucesso, mas reinicialização necessária
+- **Código 3010** = Sucesso, mas precisa reiniciar o PC
 
 ### "Interface não abre"
-- Verifique se CustomTkinter está instalado: `pip install customtkinter`
-- Execute pelo terminal para ver erros: `python main.py`
+- Verifique se está executando como Administrador
+- Se rodando do código: `pip install customtkinter pillow`
 
 ### "Download falhou"
-- Verifique se a URL está acessível
-- Algumas URLs requerem autenticação ou bloqueiam downloads automatizados
+- Verifique sua conexão com a internet
+- Algumas URLs bloqueiam downloads automatizados
 - Tente baixar manualmente e usar como arquivo local
 
 ---
 
 ## 🤝 Contribuindo
 
-Contribuições são muito bem-vindas! Veja o arquivo [CONTRIBUTING.md](CONTRIBUTING.md) para detalhes sobre como contribuir.
+Contribuições são muito bem-vindas! Veja o arquivo [CONTRIBUTING.md](CONTRIBUTING.md) para detalhes.
 
 ### Formas de Contribuir
 
@@ -301,6 +304,20 @@ Este projeto está licenciado sob a **MIT License** - veja o arquivo [LICENSE](L
 
 ---
 
+## 🏢 Desenvolvido por
+
+<div align="center">
+
+**ELSE SYSTEMS LTDA**
+
+[![Website](https://img.shields.io/badge/Website-elsesystems.com-00D4AA?style=for-the-badge&logo=google-chrome&logoColor=white)](https://elsesystems.com)
+
+*Transformando Negócios com Tecnologia*
+
+</div>
+
+---
+
 ## 🙏 Agradecimentos
 
 - [CustomTkinter](https://github.com/TomSchimansky/CustomTkinter) pela excelente biblioteca de UI
@@ -313,6 +330,6 @@ Este projeto está licenciado sob a **MIT License** - veja o arquivo [LICENSE](L
 
 **⭐ Se este projeto te ajudou, considere dar uma estrela!**
 
-Feito com ❤️ por [Samuel Else](https://github.com/SamuelElse)
+Feito com ❤️ por [Samuel Else](https://github.com/SamuelElse) | [ELSE SYSTEMS](https://elsesystems.com)
 
 </div>
